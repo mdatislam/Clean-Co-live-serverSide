@@ -1,4 +1,5 @@
 const express = require('express')
+const jwt = require('jsonwebtoken');
 const app = express()
 const cors = require('cors')
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
@@ -25,7 +26,7 @@ async function run() {
 
 
     app.get("/products", async(req,res) =>{
-        const result = await productCollection.find({}).toArray()
+        const result = await productCollection.find({}).sort({_id:-1}).limit(6).toArray()
        /*  console.log(result) */
         res.send(result)
     })
@@ -61,7 +62,20 @@ async function run() {
       const updateDoc = {$set: data} ;
       const option = {upsert:true}
       const result = await serviceCollection.updateOne(filter,updateDoc,option)
-      res.send({status: true,result})
+
+      const token= jwt.sign({
+        id: 'id'
+      },process.env.ACCESS_TOKEN_SECRET,{ expiresIn: '1h' });
+
+      res.send({result,token})
+
+    })
+
+    app.delete("/delete-product/:id", async(req,res)=>{
+      const {id}= req.params
+      const filter ={_id:ObjectId(id)}
+      const result = await productCollection.deleteOne(filter)
+      res.send(result)
     })
 
     app.delete("/delete-service/:id",async(req,res)=>{
