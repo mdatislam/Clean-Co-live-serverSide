@@ -63,11 +63,11 @@ async function run() {
       const option = {upsert:true}
       const result = await serviceCollection.updateOne(filter,updateDoc,option)
 
-      const token= jwt.sign({
+      /* const token= jwt.sign({
         id: 'id'
-      },process.env.ACCESS_TOKEN_SECRET,{ expiresIn: '1h' });
-
-      res.send({result,token})
+      },process.env.ACCESS_TOKEN_SECRET,{ expiresIn: '1h' }); 
+ */
+      res.send(result)
 
     })
 
