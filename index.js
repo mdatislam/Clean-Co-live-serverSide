@@ -1,5 +1,6 @@
 const express = require('express')
 const jwt = require('jsonwebtoken');
+require('dotenv').config()
 const app = express()
 const cors = require('cors')
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
@@ -11,6 +12,7 @@ app.use(express.json())
 
 //user: admin
 // pass:FB9c5i4AxAN3l0em
+//  https://enigmatic-shore-65172.herokuapp.com
 
 
 
